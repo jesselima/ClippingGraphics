@@ -87,3 +87,7 @@ Used to perform an action when the user clicks the view
 > do maximize drawing performance
 [Clipping](https://en.wikipedia.org/wiki/Clipping_%28computer_graphics%29)
 [@JvmOverloads](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html)
+
+[Canvas.clipRect(left, top, right, bottom)](https://developer.android.com/reference/android/graphics/Canvas.html)
+[Paint.Align](https://developer.android.com/reference/android/graphics/Paint.Align.html)
+[Canvas.drawText()](https://developer.android.com/reference/kotlin/android/graphics/Canvas.html#drawtext_1)
