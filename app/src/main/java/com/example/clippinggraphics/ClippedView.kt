@@ -29,6 +29,9 @@ class ClippedView @JvmOverloads constructor(
 	private val clipRectTop = resources.getDimension(R.dimen.clipRectTop)
 	private val clipRectLeft = resources.getDimension(R.dimen.clipRectLeft)
 
+	// Variables for the inset of a rectangle and the offset of a small rectangle.
+	private val rectInset = resources.getDimension(R.dimen.rectInset)
+
 	// Variable for the radius of a circle. This is the circle that is drawn inside the rectangle.
 	private val circleRadius = resources.getDimension(R.dimen.circleRadius)
 
@@ -36,12 +39,29 @@ class ClippedView @JvmOverloads constructor(
 	private val textOffSet = resources.getDimension(R.dimen.textOffset)
 	private val textSize = resources.getDimension(R.dimen.textSize)
 
+	// Set up the coordinates for two columns.
+	private val columnOne = rectInset
+
+	// Add the coordinates for each row, including the final row for the transformed text.
+	private val rowOne = rectInset
+
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
-		drawTranslatedTextExample(canvas)
+		drawBackAndUnclippedRectangle(canvas = canvas)
 	}
 
-	private fun drawTranslatedTextExample(canvas: Canvas) {
+	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
+		canvas.drawColor(Color.WHITE)
+		canvas.save()
+		// Translate to the first row and column position.
+		canvas.translate(columnOne, rowOne)
+		// Draw
+		drawClippedRectangle(canvas = canvas)
+		// restore the canvas to its previous state.
+		canvas.restore()
+	}
+
+	private fun drawClippedRectangle(canvas: Canvas) {
 		// Set the boundaries for the clipping rectangle where draw operations can write to.
 		canvas.clipRect(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom)
 		canvas.drawColor(Color.GRAY)
