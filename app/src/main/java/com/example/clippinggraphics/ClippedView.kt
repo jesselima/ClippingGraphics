@@ -71,6 +71,7 @@ class ClippedView @JvmOverloads constructor(
 		drawIntersectionClippingExample(canvas = canvas)
 		drawCombinedClippingExample(canvas = canvas)
 		drawRoundedRectangleClippingExample(canvas = canvas)
+		drawOutsideClippingExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -252,4 +253,21 @@ class ClippedView @JvmOverloads constructor(
 		drawClippedRectangle(canvas)
 		canvas.restore()
 	}
+
+	/**
+	 * Clips outside the rectangle by doubling the insets of the clipping rectangle
+	 */
+	private fun drawOutsideClippingExample(canvas: Canvas) {
+		canvas.save()
+		canvas.translate(columnOne,rowFour)
+		canvas.clipRect(
+			2 * rectInset,
+			2 * rectInset,
+			clipRectRight - 2 * rectInset,
+			clipRectBottom - 2 * rectInset
+		)
+		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
+
 }
