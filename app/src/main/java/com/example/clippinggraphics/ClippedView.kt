@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Region
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 
@@ -23,6 +26,8 @@ class ClippedView @JvmOverloads constructor(
 		textSize = resources.getDimension(R.dimen.textSize)
 	}
 
+	val path = Path()
+
 	// Dimensions for a clipping rectangle around the whole set of shapes.
 	private val clipRectRight = resources.getDimension(R.dimen.clipRectRight)
 	private val clipRectBottom = resources.getDimension(R.dimen.clipRectBottom)
@@ -41,6 +46,7 @@ class ClippedView @JvmOverloads constructor(
 
 	// Set up the coordinates for two columns.
 	private val columnOne = rectInset
+	private val columnTwo = columnOne + rectInset + clipRectRight
 
 	// Add the coordinates for each row, including the final row for the transformed text.
 	private val rowOne = rectInset
@@ -48,6 +54,7 @@ class ClippedView @JvmOverloads constructor(
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
 		drawBackAndUnclippedRectangle(canvas = canvas)
+		drawDifferenceClippingExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -90,4 +97,48 @@ class ClippedView @JvmOverloads constructor(
 			paint
 		)
 	}
+
+	/**
+	 * - Save the canvas.
+	 * - Translate the origin of the canvas into open space to the first row, second column, to the right of the first rectangle.
+	 * - Apply two clipping rectangles. The DIFFERENCE operator subtracts the second rectangle from the first one.
+	 * - Call the drawClippedRectangle() method to draw the modified canvas.
+	 * - Restore the canvas state.
+	 * - Run your app and it should look like this.
+	 */
+	private fun drawDifferenceClippingExample(canvas: Canvas) {
+		canvas.save()
+
+		// Move the origin to the right for the next rectangle.
+		canvas.translate(columnTwo,rowOne)
+
+		// Use the subtraction of two clipping rectangles to create a frame.
+		canvas.clipRect(
+			2 * rectInset,2 * rectInset,
+			clipRectRight - 2 * rectInset,
+			clipRectBottom - 2 * rectInset
+		)
+
+		// The method clipRect(float, float, float, float, Region.Op
+		// .DIFFERENCE) was deprecated in API level 26. The recommended
+		// alternative method is clipOutRect(float, float, float, float),
+		// which is currently available in API level 26 and higher.
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+			canvas.clipRect(
+				4 * rectInset,4 * rectInset,
+				clipRectRight - 4 * rectInset,
+				clipRectBottom - 4 * rectInset,
+				Region.Op.DIFFERENCE
+			)
+		else {
+			canvas.clipOutRect(
+				4 * rectInset,4 * rectInset,
+				clipRectRight - 4 * rectInset,
+				clipRectBottom - 4 * rectInset
+			)
+		}
+		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
+
 }
