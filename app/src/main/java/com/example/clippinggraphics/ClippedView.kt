@@ -26,7 +26,7 @@ class ClippedView @JvmOverloads constructor(
 		textSize = resources.getDimension(R.dimen.textSize)
 	}
 
-	val path = Path()
+	private val path = Path()
 
 	// Dimensions for a clipping rectangle around the whole set of shapes.
 	private val clipRectRight = resources.getDimension(R.dimen.clipRectRight)
@@ -50,11 +50,13 @@ class ClippedView @JvmOverloads constructor(
 
 	// Add the coordinates for each row, including the final row for the transformed text.
 	private val rowOne = rectInset
+	private val rowTwo = rowOne + rectInset + clipRectBottom
 
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
 		drawBackAndUnclippedRectangle(canvas = canvas)
 		drawDifferenceClippingExample(canvas = canvas)
+		drawCircularClippingExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -136,6 +138,30 @@ class ClippedView @JvmOverloads constructor(
 				clipRectRight - 4 * rectInset,
 				clipRectBottom - 4 * rectInset
 			)
+		}
+		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
+
+	private fun drawCircularClippingExample(canvas: Canvas) {
+
+		canvas.save()
+		canvas.translate(columnOne, rowTwo)
+		// Clears any lines and curves from the path but unlike reset(),
+		// keeps the internal data structure for faster reuse.
+		path.rewind()
+		path.addCircle(
+			circleRadius,clipRectBottom - circleRadius,
+			circleRadius,Path.Direction.CCW
+		)
+		// The method clipPath(path, Region.Op.DIFFERENCE) was deprecated in
+		// API level 26. The recommended alternative method is
+		// clipOutPath(Path), which is currently available in
+		// API level 26 and higher.
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+			canvas.clipPath(path, Region.Op.DIFFERENCE)
+		} else {
+			canvas.clipOutPath(path)
 		}
 		drawClippedRectangle(canvas)
 		canvas.restore()
