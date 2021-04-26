@@ -52,6 +52,7 @@ class ClippedView @JvmOverloads constructor(
 	// Add the coordinates for each row, including the final row for the transformed text.
 	private val rowOne = rectInset
 	private val rowTwo = rowOne + rectInset + clipRectBottom
+	private val rowThree = rowTwo + rectInset + clipRectBottom
 
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
@@ -59,6 +60,7 @@ class ClippedView @JvmOverloads constructor(
 		drawDifferenceClippingExample(canvas = canvas)
 		drawCircularClippingExample(canvas = canvas)
 		drawIntersectionClippingExample(canvas = canvas)
+		drawCombinedClippingExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -195,6 +197,26 @@ class ClippedView @JvmOverloads constructor(
 				clipRectRight, clipRectBottom
 			)
 		}
+		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
+
+	private fun drawCombinedClippingExample(canvas: Canvas) {
+		canvas.save()
+		canvas.translate(columnOne, rowThree)
+		path.rewind()
+		path.addCircle(
+			clipRectLeft + rectInset + circleRadius,
+			clipRectTop + circleRadius + rectInset,
+			circleRadius,Path.Direction.CCW
+		)
+		path.addRect(
+			clipRectRight / 2 - circleRadius,
+			clipRectTop + circleRadius + rectInset,
+			clipRectRight / 2 + circleRadius,
+			clipRectBottom - rectInset,Path.Direction.CCW
+		)
+		canvas.clipPath(path)
 		drawClippedRectangle(canvas)
 		canvas.restore()
 	}
