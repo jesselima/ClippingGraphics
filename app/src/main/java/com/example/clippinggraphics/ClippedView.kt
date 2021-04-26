@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.RectF
 import android.graphics.Region
 import android.os.Build
 import android.util.AttributeSet
@@ -53,6 +54,14 @@ class ClippedView @JvmOverloads constructor(
 	private val rowOne = rectInset
 	private val rowTwo = rowOne + rectInset + clipRectBottom
 	private val rowThree = rowTwo + rectInset + clipRectBottom
+	private val rowFour = rowThree + rectInset + clipRectBottom
+
+	private var rectF = RectF(
+		rectInset,
+		rectInset,
+		clipRectRight - rectInset,
+		clipRectBottom - rectInset
+	)
 
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
@@ -61,6 +70,7 @@ class ClippedView @JvmOverloads constructor(
 		drawCircularClippingExample(canvas = canvas)
 		drawIntersectionClippingExample(canvas = canvas)
 		drawCombinedClippingExample(canvas = canvas)
+		drawRoundedRectangleClippingExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -215,6 +225,28 @@ class ClippedView @JvmOverloads constructor(
 			clipRectTop + circleRadius + rectInset,
 			clipRectRight / 2 + circleRadius,
 			clipRectBottom - rectInset,Path.Direction.CCW
+		)
+		canvas.clipPath(path)
+		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
+
+	/**
+	 * The addRoundRect() function takes a rectangle.
+	 * Values for the x and y values of the corner radius.
+	 * The direction to wind the round-rectangle's contour.
+	 * Path.Direction specifies how closed shapes (e.g. rects, ovals) are oriented when they are
+	 * added to a path. CCW stands for counter-clockwise.
+	 */
+	private fun drawRoundedRectangleClippingExample(canvas: Canvas) {
+		canvas.save()
+		canvas.translate(columnTwo,rowThree)
+		path.rewind()
+		path.addRoundRect(
+			rectF,
+			clipRectRight / 4,
+			clipRectRight / 4,
+			Path.Direction.CCW
 		)
 		canvas.clipPath(path)
 		drawClippedRectangle(canvas)

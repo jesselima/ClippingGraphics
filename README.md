@@ -91,3 +91,6 @@ Used to perform an action when the user clicks the view
 [Canvas.clipRect(left, top, right, bottom)](https://developer.android.com/reference/android/graphics/Canvas.html)
 [Paint.Align](https://developer.android.com/reference/android/graphics/Paint.Align.html)
 [Canvas.drawText()](https://developer.android.com/reference/kotlin/android/graphics/Canvas.html#drawtext_1)
+[addRoundRect()](https://developer.android.com/reference/kotlin/android/graphics/Path.html#addroundrect_1)
+[Path.Direction](https://developer.android.com/reference/android/graphics/Path.Direction)
+[RectF](https://developer.android.com/reference/kotlin/android/graphics/RectF.html)
