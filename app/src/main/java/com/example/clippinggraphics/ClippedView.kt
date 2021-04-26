@@ -36,6 +36,7 @@ class ClippedView @JvmOverloads constructor(
 
 	// Variables for the inset of a rectangle and the offset of a small rectangle.
 	private val rectInset = resources.getDimension(R.dimen.rectInset)
+	private val smallRectOffset = resources.getDimension(R.dimen.smallRectOffset)
 
 	// Variable for the radius of a circle. This is the circle that is drawn inside the rectangle.
 	private val circleRadius = resources.getDimension(R.dimen.circleRadius)
@@ -57,6 +58,7 @@ class ClippedView @JvmOverloads constructor(
 		drawBackAndUnclippedRectangle(canvas = canvas)
 		drawDifferenceClippingExample(canvas = canvas)
 		drawCircularClippingExample(canvas = canvas)
+		drawIntersectionClippingExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -167,4 +169,33 @@ class ClippedView @JvmOverloads constructor(
 		canvas.restore()
 	}
 
+	private fun drawIntersectionClippingExample(canvas: Canvas) {
+		canvas.save()
+		canvas.translate(columnTwo, rowTwo)
+		canvas.clipRect(
+			clipRectLeft, clipRectTop,
+			clipRectRight - smallRectOffset,
+			clipRectBottom - smallRectOffset
+		)
+		// The method clipRect(float, float, float, float, Region.Op
+		// .INTERSECT) was deprecated in API level 26. The recommended
+		// alternative method is clipRect(float, float, float, float), which
+		// is currently available in API level 26 and higher.
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+			canvas.clipRect(
+				clipRectLeft + smallRectOffset,
+				clipRectTop + smallRectOffset,
+				clipRectRight, clipRectBottom,
+				Region.Op.INTERSECT
+			)
+		} else {
+			canvas.clipRect(
+				clipRectLeft + smallRectOffset,
+				clipRectTop + smallRectOffset,
+				clipRectRight, clipRectBottom
+			)
+		}
+		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
 }
