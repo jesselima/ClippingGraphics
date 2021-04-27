@@ -74,6 +74,7 @@ class ClippedView @JvmOverloads constructor(
 		drawRoundedRectangleClippingExample(canvas = canvas)
 		drawOutsideClippingExample(canvas = canvas)
 		drawTranslatedTextExample(canvas = canvas)
+		drawSkewedTextExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -282,6 +283,23 @@ class ClippedView @JvmOverloads constructor(
 		// Draw text.
 		canvas.drawText(
 			context.getString(R.string.translated),
+			clipRectLeft,
+			clipRectTop,
+			paint
+		)
+		canvas.restore()
+	}
+
+	private fun drawSkewedTextExample(canvas: Canvas) {
+		canvas.save()
+		paint.color = Color.DKGRAY
+		paint.textAlign = Paint.Align.RIGHT
+		// Position text.
+		canvas.translate(columnTwo, rowText)
+		// Apply skew transformation.
+		canvas.skew(0.2f, 0.3f)
+		canvas.drawText(
+			context.getString(R.string.skewed),
 			clipRectLeft,
 			clipRectTop,
 			paint
