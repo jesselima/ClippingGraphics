@@ -55,6 +55,7 @@ class ClippedView @JvmOverloads constructor(
 	private val rowTwo = rowOne + rectInset + clipRectBottom
 	private val rowThree = rowTwo + rectInset + clipRectBottom
 	private val rowFour = rowThree + rectInset + clipRectBottom
+	private val rowText = rowFour + rectInset + clipRectBottom
 
 	private var rectF = RectF(
 		rectInset,
@@ -72,6 +73,7 @@ class ClippedView @JvmOverloads constructor(
 		drawCombinedClippingExample(canvas = canvas)
 		drawRoundedRectangleClippingExample(canvas = canvas)
 		drawOutsideClippingExample(canvas = canvas)
+		drawTranslatedTextExample(canvas = canvas)
 	}
 
 	private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
@@ -267,6 +269,23 @@ class ClippedView @JvmOverloads constructor(
 			clipRectBottom - 2 * rectInset
 		)
 		drawClippedRectangle(canvas)
+		canvas.restore()
+	}
+
+	private fun drawTranslatedTextExample(canvas: Canvas) {
+		canvas.save()
+		paint.color = Color.RED
+		// Align the RIGHT side of the text with the origin.
+		paint.textAlign = Paint.Align.LEFT
+		// Apply transformation to canvas.
+		canvas.translate(columnTwo, rowText)
+		// Draw text.
+		canvas.drawText(
+			context.getString(R.string.translated),
+			clipRectLeft,
+			clipRectTop,
+			paint
+		)
 		canvas.restore()
 	}
 
