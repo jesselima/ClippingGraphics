@@ -94,3 +94,19 @@ Used to perform an action when the user clicks the view
 [addRoundRect()](https://developer.android.com/reference/kotlin/android/graphics/Path.html#addroundrect_1)
 [Path.Direction](https://developer.android.com/reference/android/graphics/Path.Direction)
 [RectF](https://developer.android.com/reference/kotlin/android/graphics/RectF.html)
+
+[Canvas class](https://developer.android.com/reference/android/graphics/Canvas.html)
+[Bitmap class](https://developer.android.com/reference/android/graphics/Bitmap.html)
+[View class](https://developer.android.com/reference/android/view/View.html)
+[Paint class](https://developer.android.com/reference/android/graphics/Paint.html)
+[Bitmap.config configurations](https://developer.android.com/reference/android/graphics/Bitmap.Config.html)
+[Region.Op operators](https://developer.android.com/reference/android/graphics/Region.Op.html)
+[Path class](https://developer.android.com/reference/android/graphics/package-summary.html)
+[android.graphics graphics tools](https://developer.android.com/reference/android/graphics/package-summary.html)
+[Canvas and Drawables](https://developer.android.com/guide/topics/graphics/drawables)
+
+- Useful Links
+
+[What does canvas.translate() do](https://stackoverflow.com/questions/5789813/what-does-canvas-translate-do)
+[Understanding save() and restore() for the Canvas context](http://html5.litten.com/understanding-save-and-restore-for-the-canvas-context/)
+[Graphics Architecture](https://source.android.com/devices/graphics/)
